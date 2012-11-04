@@ -1,6 +1,7 @@
 
 package database;
 
+import java.io.File;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -9,7 +10,7 @@ import org.junit.Test;
  * @author javarobots74
  */
 public class MSAccessConfigurationTest {
-    
+
     /**
      * Test of loadDriver method, of class MSAccessConfiguration.
      */
@@ -57,5 +58,21 @@ public class MSAccessConfigurationTest {
         String expResult = "sun.jdbc.odbc.JdbcOdbcDriver";
         String result = instance.getJdbcOdbcDriver();
         assertEquals(expResult, result);
+    }
+
+    @Test
+    public void veryDataSourceDirectory() {
+        System.out.println("veryDataSourceDirectory");
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit");
+        String dataSourceDirectory = instance.getDataSourceLocation();
+        boolean expResult = false;
+        File directory = new File(dataSourceDirectory);
+        assertEquals(expResult, directory.exists());
+        instance.veryDataSourceDirectory();
+        expResult = true;
+        assertEquals(expResult, directory.exists());
+        directory.delete();
+        expResult = false;
+        assertEquals(expResult, directory.exists());
     }
 }
