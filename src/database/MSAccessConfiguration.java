@@ -5,7 +5,8 @@ import java.io.File;
 /**
  * The configuration object holds the default driver String
  * and data source name. The name is set at the time of
- * construction and can be changed at any time.
+ * construction and can be changed at any time. Database
+ * directory verification is also handled.
  *
  * @author javarobots74
  */
@@ -38,7 +39,13 @@ public class MSAccessConfiguration {
         }
     }
 
-    public boolean veryDataSourceDirectory() {
+    /**
+     * Verify the directory for the database. If the directory is not
+     * present it will be created. This is a preparatory step to
+     * installing/copying the empty database from resources.
+     * @return true upon successful verification
+     */
+    public boolean verifyDataSourceDirectory() {
         File directory = new File(this.dataSourceLocation);
         boolean result = false;
         if (!directory.exists()){

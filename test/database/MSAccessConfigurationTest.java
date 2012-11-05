@@ -68,7 +68,7 @@ public class MSAccessConfigurationTest {
         boolean expResult = false;
         File directory = new File(dataSourceDirectory);
         assertEquals(expResult, directory.exists());
-        instance.veryDataSourceDirectory();
+        instance.verifyDataSourceDirectory();
         expResult = true;
         assertEquals(expResult, directory.exists());
         directory.delete();
