@@ -17,7 +17,7 @@ public class MSAccessConfigurationTest {
     @Test
     public void testLoadDriver() {
         System.out.println("loadDriver");
-        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit");
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit", "test.mdb");
         boolean expResult = true;
         boolean result = instance.loadDriver();
         assertEquals(expResult, result);
@@ -29,7 +29,7 @@ public class MSAccessConfigurationTest {
     @Test
     public void testGetDataSourceName() {
         System.out.println("getDataSourceName");
-        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit");
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit", "test.mdb");
         String expResult = "JUnit";
         String result = instance.getDataSourceName();
         assertEquals(expResult, result);
@@ -42,7 +42,7 @@ public class MSAccessConfigurationTest {
     public void testSetDataSourceName() {
         System.out.println("setDataSourceName");
         String dataSourceName = "newJUnit";
-        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit");
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit", "test.mdb");
         instance.setDataSourceName(dataSourceName);
         String newName = instance.getDataSourceName();
         assertEquals(dataSourceName, newName);
@@ -54,19 +54,21 @@ public class MSAccessConfigurationTest {
     @Test
     public void testGetJdbcOdbcDriver() {
         System.out.println("getJdbcOdbcDriver");
-        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit");
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit", "test.mdb");
         String expResult = "sun.jdbc.odbc.JdbcOdbcDriver";
         String result = instance.getJdbcOdbcDriver();
         assertEquals(expResult, result);
     }
 
+    /**
+     * Test of verifyDataSourceDirectory method, of class MSAccessConfiguration.
+     */
     @Test
-    public void veryDataSourceDirectory() {
+    public void testVerifyDataSourceDirectory() {
         System.out.println("veryDataSourceDirectory");
-        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit");
-        String dataSourceDirectory = instance.getDataSourceLocation();
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit", "test.mdb");        
         boolean expResult = false;
-        File directory = new File(dataSourceDirectory);
+        File directory = new File(instance.getDataSourceLocation());
         assertEquals(expResult, directory.exists());
         instance.verifyDataSourceDirectory();
         expResult = true;
@@ -74,5 +76,20 @@ public class MSAccessConfigurationTest {
         directory.delete();
         expResult = false;
         assertEquals(expResult, directory.exists());
+    }
+    
+    /**
+     * Test copyDatabaseFile method, of class MSAccessConfiguration.
+     */
+    @Test
+    public void testCopyDatabaseFile() {
+        System.out.println("copyDatabaseFile");
+        MSAccessConfiguration instance = new MSAccessConfiguration("JUnit", "test.mdb");
+        boolean expResult = true;
+        instance.copyDatabaseFile();
+        File dataSourceFile = new File(instance.getDataSourceLocation(), instance.getDataSourceFileName());
+        assertEquals(expResult, dataSourceFile.exists());
+        dataSourceFile.delete();
+        (new File(instance.getDataSourceLocation())).delete();
     }
 }

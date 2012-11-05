@@ -1,6 +1,10 @@
 package database;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
 
 /**
  * The configuration object holds the default driver String
@@ -13,6 +17,7 @@ import java.io.File;
 public class MSAccessConfiguration {
 
     private String dataSourceName;
+    private String dataSourceFileName;
     private String jdbcOdbcDriver = "sun.jdbc.odbc.JdbcOdbcDriver";
     private String dataSourceLocation = "C:/Program Files/Java DSN";
 
@@ -22,8 +27,9 @@ public class MSAccessConfiguration {
      * be configured in the ODBC Data Source Administrator
      * @param dataSourceName
      */
-    public MSAccessConfiguration(String dataSourceName){
+    public MSAccessConfiguration(String dataSourceName, String dataSourceFileName){
         this.dataSourceName = dataSourceName;
+        this.dataSourceFileName = dataSourceFileName;
     }
 
     /**
@@ -53,6 +59,21 @@ public class MSAccessConfiguration {
         }
         return result;
     }
+    
+    /**
+     * Copy the database file to the specified data source location. 
+     * @return true upon successful extraction
+     */
+    public boolean copyDatabaseFile() {
+        boolean success = false;
+        try {
+            FileUtils.copyFile(new File("test/resources/test.mdb"), new File(this.dataSourceLocation + "/test.mdb"));
+            success = true;
+        } catch (IOException ex) {
+            Logger.getLogger(MSAccessConfiguration.class.getName()).log(Level.SEVERE, null, ex);            
+        }
+        return success;
+    }
 
     public String getDataSourceName() {
         return dataSourceName;
@@ -73,5 +94,15 @@ public class MSAccessConfiguration {
     public void setDataSourceLocation(String dataSourceLocation) {
         this.dataSourceLocation = dataSourceLocation;
     }
+
+    public String getDataSourceFileName() {
+        return dataSourceFileName;
+    }
+
+    public void setDataSourceFileName(String dataSourceFileName) {
+        this.dataSourceFileName = dataSourceFileName;
+    }
+    
+    
 
 }
